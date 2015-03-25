@@ -1,4 +1,4 @@
 # Det här är en kommentar
 print ("hej")
 myString = "hej"
-print (myString.count('j'))
+print (myString.count('e'))
