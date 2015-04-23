@@ -1,4 +1,43 @@
-# Det här är en kommentar
-print ("hej")
-myString = "hej"
-print (myString.count('e'))
+# Här testar jag att gå mot min MySQLDB
+import mysql.connector
+
+# variabel som innehåller inloggningsinfo mot db
+#dbconfig = "user='guz', password='gusman', host='127.0.0.1', database='pploggtest'"
+
+# kopplar upp mig mot db:n
+try: 
+    cnx = mysql.connector.connect(user='guz', password='gusman', host='127.0.0.1', database='pploggtest')
+
+except mysql.connector.Error as err:
+  if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+    print("Something is wrong with your user name or password")
+  elif err.errno == errorcode.ER_BAD_DB_ERROR:
+    print("Database does not exist")
+  else:
+    print(err)
+else:
+
+    # prepare a cursor object using cursor() method
+    kursor = cnx.cursor()
+    
+    # Prepare SQL query to select a record into the database.
+    sql = "SELECT * FROM fua_descriptions WHERE LogCode = 'aAM'"
+
+    # Execute the SQL command
+    kursor.execute(sql)
+
+    # Fetch all the rows in a list of lists.
+    results = kursor.fetchall()
+
+    for row in results:
+       LogFeatName = row[0]
+       LogCode = row[1]
+       LogDesc = row[2]
+       LogDescComm = row[3]
+       DBSource = row[4]
+
+    print ("Featurename = %s, LogCode = %s, LogDesc = %s , LogDescComm = %s, \
+            DBSource = %s" % (LogFeatName, LogCode, LogDesc, LogDescComm, DBSource))
+
+# stänger koppling mot db:n
+    cnx.close()
